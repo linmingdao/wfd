@@ -1,35 +1,37 @@
-export default function(G6) {
+export default function (G6) {
   G6.registerBehavior('clickSelected', {
     getDefaultCfg() {
       return {
         multiple: false,
       };
     },
-    getEvents():any {
+    getEvents(): any {
       return {
         'node:click': 'onClick',
+        'node:dblclick': 'onNodeDbClick',
+        'node:mouseover': 'onNodeMouseOver',
         'edge:click': 'onClick',
         'edge:mouseover': 'onEdgeMouseOver',
         'edge:mouseleave': 'onEdgeMouseLeave',
         'canvas:click': 'onCanvasClick',
-        'node:mouseover': 'onNodeMouseOver',
       };
     },
     onClick(e) {
       this._clearSelected();
       this.graph.setItemState(e.item, 'selected', true);
       let selectedItems = this.graph.get('selectedItems');
-      if (!selectedItems)
-        selectedItems = [];
+      if (!selectedItems) selectedItems = [];
       selectedItems = [e.item.get('id')];
       this.graph.set('selectedItems', selectedItems);
       this.graph.emit('afteritemselected', selectedItems);
+      this.graph.emit('onNodeClick', e.item._cfg.model);
+    },
+    onNodeDbClick(e) {
+      this.graph.emit('onNodeDbClick', e.item._cfg.model);
     },
     onNodeMouseOver(e) {
-      if (this.graph.getCurrentMode() === 'edit')
-        this.graph.setItemState(e.item, 'hover', true);
-      else
-        this.graph.setItemState(e.item, 'hover', false);
+      if (this.graph.getCurrentMode() === 'edit') this.graph.setItemState(e.item, 'hover', true);
+      else this.graph.setItemState(e.item, 'hover', false);
     },
     onEdgeMouseOver(e) {
       if (this.graph.getCurrentMode() === 'edit' && !e.item.hasState('selected'))
@@ -66,7 +68,7 @@ export default function(G6) {
           return false;
         }
       });
-      selected.forEach(subGroup => {
+      selected.forEach((subGroup) => {
         const node = subGroup.get('item');
         if (node) {
           node.setState('selected', false);
@@ -75,11 +77,11 @@ export default function(G6) {
     },
     _clearSelected() {
       let selected = this.graph.findAllByState('node', 'selected');
-      selected.forEach(node => {
+      selected.forEach((node) => {
         this.graph.setItemState(node, 'selected', false);
       });
       selected = this.graph.findAllByState('edge', 'selected');
-      selected.forEach(edge => {
+      selected.forEach((edge) => {
         this.graph.setItemState(edge, 'selected', false);
       });
       this._clearSubProcessSelected();

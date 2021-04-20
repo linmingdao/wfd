@@ -35,10 +35,22 @@ class Demo extends Component {
     this.setState({ selectedLang: key });
   }
 
+  onNodeAdd(data) {
+    console.log('onNodeAdd', data);
+  }
+
+  onNodeClick(data) {
+    console.log('onNodeClick', data);
+  }
+
+  onNodeDbClick(data) {
+    console.log('onNodeDbClick', data);
+  }
+
   render() {
     const data = {
       nodes: [
-        { id: 'startNode1', x: 50, y: 200, label: '', clazz: 'start' },
+        { id: 'startNode1', x: 50, y: 200, label: '', clazz: 'start', data: { type: '告警' } },
         { id: 'startNode2', x: 50, y: 320, label: '', clazz: 'timerStart' },
         { id: 'taskNode1', x: 200, y: 200, label: '主任审批', clazz: 'userTask' },
         { id: 'taskNode2', x: 400, y: 200, label: '经理审批', clazz: 'scriptTask' },
@@ -206,8 +218,15 @@ class Demo extends Component {
     ];
     const height = 715;
     const { modalVisible, selectedLang } = this.state;
+
     return (
       <div>
+        <Button
+          style={{ float: 'right', marginTop: 6, marginRight: 6 }}
+          onClick={() => console.log(this.wfdRef.current.graph.save())}
+        >
+          保存
+        </Button>
         <Button
           style={{ float: 'right', marginTop: 6, marginRight: 6 }}
           onClick={() => this.wfdRef.current.graph.saveXML()}
@@ -228,6 +247,9 @@ class Demo extends Component {
           data={data}
           height={height}
           mode={'edit'}
+          onNodeAdd={(data) => this.onNodeAdd(data)}
+          onNodeClick={(data) => this.onNodeClick(data)}
+          onNodeDbClick={(data) => this.onNodeDbClick(data)}
           users={candidateUsers}
           groups={candidateGroups}
           lang={selectedLang}

@@ -1,4 +1,4 @@
-import editorStyle from "../util/defaultStyle";
+import editorStyle from '../util/defaultStyle';
 
 export default function (G6) {
   G6.registerBehavior('dragNode', {
@@ -14,7 +14,7 @@ export default function (G6) {
       return {
         'node:dragstart': 'onDragStart',
         'node:drag': 'onDrag',
-        'node:dragend': 'onDragEnd'
+        'node:dragend': 'onDragEnd',
       };
     },
     onDragStart(e) {
@@ -24,7 +24,7 @@ export default function (G6) {
       this.target = e.item;
       this.origin = {
         x: e.x,
-        y: e.y
+        y: e.y,
       };
     },
     onDrag(e) {
@@ -40,7 +40,7 @@ export default function (G6) {
       if (!this.point) {
         this.point = {
           x: model.x,
-          y: model.y
+          y: model.y,
         };
       }
       if (groupId) {
@@ -51,7 +51,7 @@ export default function (G6) {
         this.origin = { x: e.x, y: e.y };
         this.point = {
           x: x - subProcessBBox.x - subProcessBBox.width / 2,
-          y: y - subProcessBBox.y - subProcessBBox.height / 2
+          y: y - subProcessBBox.y - subProcessBBox.height / 2,
         };
         if (this.delegate) {
           this._updateDelegate(this.target, x, y);
@@ -107,7 +107,7 @@ export default function (G6) {
       if (this.graph.executeCommand) {
         this.graph.executeCommand('update', {
           itemId: item.get('id'),
-          updateModel: point
+          updateModel: point,
         });
       } else {
         if (this.get('updateEdge')) {
@@ -133,8 +133,8 @@ export default function (G6) {
             x: x - bbox.width / 2,
             y: y - bbox.height / 2,
             nodeId: item.get('id'),
-            ...attrs
-          }
+            ...attrs,
+          },
         });
         shape.set('capture', false);
         item.set('delegateShape', shape);

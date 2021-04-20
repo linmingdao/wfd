@@ -1,19 +1,17 @@
-import editorStyle from "../util/defaultStyle";
+import editorStyle from '../util/defaultStyle';
 import { getShapeName } from '../util/clazz';
 
 export default function (G6) {
   G6.registerBehavior('dragPanelItemAddNode', {
     getDefaultCfg() {
-      return {
-
-      };
+      return {};
     },
     getEvents() {
       return {
         'canvas:mousemove': 'onMouseMove',
         'canvas:mouseup': 'onMouseUp',
         'canvas:mouseleave': 'onMouseLeave',
-      }
+      };
     },
     onMouseMove(e) {
       if (this.graph.get('addNodeDragging')) {
@@ -33,7 +31,7 @@ export default function (G6) {
               x: x - width / 2,
               y: y - height / 2,
               ...editorStyle.nodeDelegationStyle,
-            }
+            },
           });
           delegateShape.set('capture', false);
           this.graph.set('addDelegateShape', delegateShape);
@@ -51,8 +49,7 @@ export default function (G6) {
             const clazz = node.get('model').clazz;
             if (clazz === 'subProcess') {
               const bbox = node.getBBox();
-              return p.x > bbox.minX && bbox.maxX > p.x
-                && p.y > bbox.minY && bbox.maxY > p.y;
+              return p.x > bbox.minX && bbox.maxX > p.x && p.y > bbox.minY && bbox.maxY > p.y;
             }
           } else {
             return false;
@@ -74,7 +71,7 @@ export default function (G6) {
         const addModel = this.graph.get('addModel');
         const { clazz = 'userTask' } = addModel;
         addModel.shape = getShapeName(clazz);
-        addModel.size = addModel.size.split("*");
+        addModel.size = addModel.size.split('*');
         const timestamp = new Date().getTime();
         const id = clazz + timestamp;
         const bbox = node.getBBox();
@@ -84,7 +81,7 @@ export default function (G6) {
           ...addModel,
           x,
           y,
-          id
+          id,
         };
         const group = node.getContainer();
         const resultModel = group.addNodeModel(node, nodeCfg);
@@ -121,26 +118,15 @@ export default function (G6) {
         const id = clazz + timestamp;
         const x = p.x;
         const y = p.y;
+        const data = { ...addModel, x: x, y: y, id: id };
         if (this.graph.executeCommand) {
-          this.graph.executeCommand('add', {
-            type: 'node',
-            addModel: {
-              ...addModel,
-              x: x,
-              y: y,
-              id: id,
-            },
-          });
+          this.graph.executeCommand('add', { type: 'node', addModel: data });
         } else {
-          this.graph.add('node', {
-            ...addModel,
-            x: x,
-            y: y,
-            id: id,
-          });
+          this.graph.add('node', data);
         }
+        this.graph.emit('onNodeAdd', data);
         this._clearDelegate();
       }
-    }
+    },
   });
 }

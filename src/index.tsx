@@ -9,12 +9,12 @@ import AddItemPanel from './plugins/addItemPanel';
 import CanvasPanel from './plugins/canvasPanel';
 import { exportXML } from './util/bpmn';
 import LangContext from './util/context';
-import DetailPanel from './components/DetailPanel';
 import ItemPanel from './components/ItemPanel';
 import ToolbarPanel from './components/ToolbarPanel';
 import registerShape from './shape';
 import registerBehavior from './behavior';
 import { IDefaultModel, IProcessModel, ISelectData } from './types';
+
 registerShape(G6);
 registerBehavior(G6);
 
@@ -35,10 +35,6 @@ export interface DesignerProps {
   onNodeDbClick?: (item: any) => void;
   /** 语言 */
   lang?: 'en' | 'zh';
-  /** 审核人 */
-  users?: ISelectData[];
-  /** 审核组 */
-  groups?: ISelectData[];
 }
 
 export interface DesignerStates {
@@ -51,7 +47,6 @@ export default class Designer extends React.Component<DesignerProps, DesignerSta
   private readonly pageRef: React.RefObject<any>;
   private readonly toolbarRef: React.RefObject<any>;
   private readonly itemPanelRef: React.RefObject<any>;
-  private readonly detailPanelRef: React.RefObject<any>;
   private resizeFunc: (...args: any[]) => any;
   private onNodeAdd: (item: any) => any;
   private onNodeClick: (item: any) => any;
@@ -64,7 +59,6 @@ export default class Designer extends React.Component<DesignerProps, DesignerSta
     this.pageRef = React.createRef();
     this.toolbarRef = React.createRef();
     this.itemPanelRef = React.createRef();
-    this.detailPanelRef = React.createRef();
     this.onNodeAdd = cfg.onNodeAdd;
     this.onNodeClick = cfg.onNodeClick;
     this.onNodeDbClick = cfg.onNodeDbClick;
@@ -87,7 +81,6 @@ export default class Designer extends React.Component<DesignerProps, DesignerSta
       if (this.graph) {
         this.graph.changeData(this.initShape(this.props.data));
         this.graph.setMode(this.props.mode);
-        // this.graph.emit('canvas:click');
         if (this.cmdPlugin) {
           this.cmdPlugin.initPlugin(this.graph);
         }
@@ -257,11 +250,8 @@ export default class Designer extends React.Component<DesignerProps, DesignerSta
 
   render() {
     const height = this.props.height;
-    const { isView, mode, users, groups, lang } = this.props;
-    const { selectedModel, processModel } = this.state;
-    const { signalDefs, messageDefs } = processModel;
+    const { isView, lang } = this.props;
     const i18n = locale[lang.toLowerCase()];
-    const readOnly = mode !== 'edit';
     return (
       <LangContext.Provider value={{ i18n, lang }}>
         <div className={styles.root}>
@@ -271,23 +261,8 @@ export default class Designer extends React.Component<DesignerProps, DesignerSta
             <div
               ref={this.pageRef}
               className={styles.canvasPanel}
-              style={{ height, width: isView ? '100%' : '70%', borderBottom: isView ? 0 : null }}
+              style={{ height, width: isView ? '100%' : '90%', borderBottom: isView ? 0 : null }}
             />
-            {!isView && (
-              <DetailPanel
-                ref={this.detailPanelRef}
-                height={height}
-                model={selectedModel}
-                readOnly={readOnly}
-                users={users}
-                groups={groups}
-                signalDefs={signalDefs}
-                messageDefs={messageDefs}
-                onChange={(key, val) => {
-                  this.onItemCfgChange(key, val);
-                }}
-              />
-            )}
           </div>
         </div>
       </LangContext.Provider>

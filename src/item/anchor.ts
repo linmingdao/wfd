@@ -6,28 +6,30 @@ export default class Anchor extends Item {
   public isAnchor: boolean;
   public hotpot: any;
   constructor(cfg) {
-    super(deepMix(cfg,{
-      type: 'anchor',
-      // capture: false,
-      isActived: false,
-      model: {
+    super(
+      deepMix(cfg, {
         type: 'anchor',
-        style: {
-          ...editorStyle.anchorPointStyle,
-          cursor: editorStyle.cursor.hoverEffectiveAnchor,
-        }
-      },
-    }));
+        // capture: false,
+        isActived: false,
+        model: {
+          type: 'anchor',
+          style: {
+            ...editorStyle.anchorPointStyle,
+            cursor: editorStyle.cursor.hoverEffectiveAnchor,
+          },
+        },
+      }),
+    );
     this.enableCapture(true);
     this.isAnchor = true;
     this.toFront();
   }
 
-  showHotpot(){
+  showHotpot() {
     this.hotpot = this.getContainer().addShape('marker', {
       attrs: {
         ...this.get('model').style,
-        ...editorStyle.anchorHotsoptStyle
+        ...editorStyle.anchorHotsoptStyle,
       },
       name: 'hotpot-shape',
       draggable: true,
@@ -35,17 +37,16 @@ export default class Anchor extends Item {
     this.hotpot.toFront();
     this.getKeyShape().toFront();
   }
-  setActived(){
-    this.update({style: {...editorStyle.anchorPointHoverStyle}});
+  setActived() {
+    this.update({ style: { ...editorStyle.anchorPointHoverStyle } });
   }
-  clearActived(){
-    this.update({style: {...editorStyle.anchorPointStyle}});
+  clearActived() {
+    this.update({ style: { ...editorStyle.anchorPointStyle } });
   }
-  setHotspotActived(act){
+  setHotspotActived(act) {
     this.hotpot &&
-    (act ?
-      this.hotpot.attr(editorStyle.anchorHotsoptActivedStyle)
-      : this.hotpot.attr(editorStyle.anchorHotsoptStyle))
+      (act
+        ? this.hotpot.attr(editorStyle.anchorHotsoptActivedStyle)
+        : this.hotpot.attr(editorStyle.anchorHotsoptStyle));
   }
 }
-

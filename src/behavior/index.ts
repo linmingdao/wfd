@@ -1,13 +1,13 @@
-import clickSelected from './clickSelected'
-import deleteItem from './deleteItem'
-import dragNode from './dragNode'
-import dragEdge from './dragEdge'
-import dragPanelItemAddNode from './dragPanelItemAddNode'
-import hoverAnchorActived from './hoverAnchorActived'
-import hoverNodeActived from './hoverNodeActived'
-import itemAlign from './itemAlign'
-import dragPoint from "./dragPoint";
-export default function(G6){
+import clickSelected from './clickSelected';
+import deleteItem from './deleteItem';
+import dragNode from './dragNode';
+import dragEdge from './dragEdge';
+import dragPanelItemAddNode from './dragPanelItemAddNode';
+import hoverAnchorActived from './hoverAnchorActived';
+import hoverNodeActived from './hoverNodeActived';
+import itemAlign from './itemAlign';
+import dragPoint from './dragPoint';
+export default function (G6) {
   clickSelected(G6);
   deleteItem(G6);
   dragNode(G6);

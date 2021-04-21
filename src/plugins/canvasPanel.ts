@@ -19,11 +19,11 @@ class CanvasPanel {
 
   initPlugin(graph) {
     const parentNode = this.get('container');
-    parentNode.addEventListener('dragover', e => {
-      graph.emit('canvas:mousemove',e);
+    parentNode.addEventListener('dragover', (e) => {
+      graph.emit('canvas:mousemove', e);
     });
-    parentNode.addEventListener('dragleave', e => {
-      graph.emit('canvas:mouseleave',e);
+    parentNode.addEventListener('dragleave', (e) => {
+      graph.emit('canvas:mouseleave', e);
     });
   }
 

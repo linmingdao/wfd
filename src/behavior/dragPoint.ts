@@ -1,6 +1,6 @@
 import editorStyle from '../util/defaultStyle';
 
-export default function(G6) {
+export default function (G6) {
   G6.registerBehavior('dragPoint', {
     getDefaultCfg() {
       return {
@@ -10,7 +10,7 @@ export default function(G6) {
         dragEdge: false,
       };
     },
-    getEvents():any {
+    getEvents(): any {
       return {
         'controlPoint:dragstart': 'onDragStart',
         'controlPoint:drag': 'onDrag',
@@ -72,16 +72,15 @@ export default function(G6) {
       }
       const group = node.getContainer();
       // 移动过程中的控制点全部隐藏。
-      group.controlPointShapes.forEach(a => a.hide());
+      group.controlPointShapes.forEach((a) => a.hide());
 
-      this.graph.updateItem(node, { size: [width, height], });
+      this.graph.updateItem(node, { size: [width, height] });
       this.origin = {
         x: e.x,
         y: e.y,
         sourceNode: node,
         sourceAnchor: anchorIndex,
       };
-
     },
     onDragEnd(e) {
       if (!this.origin) {

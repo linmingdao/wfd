@@ -1,4 +1,4 @@
-import editorStyle from "../util/defaultStyle";
+import editorStyle from '../util/defaultStyle';
 import { EdgeConfig } from '@antv/g6/lib/types';
 import { Marker } from '@antv/g-canvas/lib/shape';
 
@@ -12,7 +12,7 @@ export default function (G6) {
         dragEdge: false,
       };
     },
-    getEvents():any {
+    getEvents(): any {
       return {
         'anchor:dragstart': 'onDragStart',
         'anchor:drag': 'onDrag',
@@ -54,7 +54,7 @@ export default function (G6) {
           x: point.x + subProcessBBox.x + subProcessBBox.width / 2,
           y: point.y + subProcessBBox.y + subProcessBBox.height / 2,
           sourceNode: node,
-          sourceAnchor: anchorIndex
+          sourceAnchor: anchorIndex,
         };
         this.dragEdgeBeforeShowAnchorBySub(subProcessNode);
       } else {
@@ -62,7 +62,7 @@ export default function (G6) {
           x: point.x,
           y: point.y,
           sourceNode: node,
-          sourceAnchor: anchorIndex
+          sourceAnchor: anchorIndex,
         };
         this.dragEdgeBeforeShowAnchor(e);
       }
@@ -90,29 +90,39 @@ export default function (G6) {
       this.graph.set('edgeDragging', false);
     },
     sameNode(e) {
-      return e.target instanceof Marker && e.target.getParent() && e.target.getParent().getParent().get('item').get('id') === this.origin.sourceNode.get('id')
+      return (
+        e.target instanceof Marker &&
+        e.target.getParent() &&
+        e.target.getParent().getParent().get('item').get('id') === this.origin.sourceNode.get('id')
+      );
     },
     dragEdgeBeforeShowAnchorBySub(subProcessNode) {
       const group = subProcessNode.getContainer();
-      group.nodes.forEach(a => {
+      group.nodes.forEach((a) => {
         const aGroup = a.getContainer();
         aGroup.showAnchor();
-        aGroup.anchorShapes.forEach(b => b.get('item').showHotpot());
+        aGroup.anchorShapes.forEach((b) => b.get('item').showHotpot());
       });
     },
     dragEdgeBeforeShowAnchor(e) {
       const sourceGroupId = this.origin.sourceNode.getModel().groupId;
-      this.graph.getNodes().forEach(node => {
-        if (node.getModel().clazz === 'start'
-          || node.getModel().clazz === 'timerStart'
-          || node.getModel().clazz === 'messageStart')
+      this.graph.getNodes().forEach((node) => {
+        if (
+          node.getModel().clazz === 'start' ||
+          node.getModel().clazz === 'timerStart' ||
+          node.getModel().clazz === 'messageStart'
+        )
           return;
         const targetGroupId = node.getModel().groupId;
-        if (!sourceGroupId && targetGroupId || sourceGroupId && !targetGroupId || sourceGroupId !== targetGroupId)
+        if (
+          (!sourceGroupId && targetGroupId) ||
+          (sourceGroupId && !targetGroupId) ||
+          sourceGroupId !== targetGroupId
+        )
           return;
         const group = node.getContainer();
         group.showAnchor();
-        group.anchorShapes.forEach(a => a.get('item').showHotpot())
+        group.anchorShapes.forEach((a) => a.get('item').showHotpot());
       });
     },
     _updateEdge(item, e, force) {
@@ -144,7 +154,7 @@ export default function (G6) {
             x2: x,
             y2: y,
             ...editorStyle.edgeDelegationStyle,
-          }
+          },
         });
         edgeShape.set('capture', false);
         item.set('edgeDelegate', edgeShape);
@@ -153,7 +163,7 @@ export default function (G6) {
       this.graph.paint();
     },
     _clearAllAnchor() {
-      this.graph.getNodes().forEach(node => {
+      this.graph.getNodes().forEach((node) => {
         const group = node.getContainer();
         group.clearAnchor();
       });
@@ -176,7 +186,7 @@ export default function (G6) {
         if (this.graph.executeCommand) {
           this.graph.executeCommand('update', {
             itemId: subProcess.get('id'),
-            updateModel: resultModel
+            updateModel: resultModel,
           });
         } else {
           this.graph.updateItem(node, resultModel);
@@ -185,7 +195,7 @@ export default function (G6) {
     },
     _addEdge() {
       if (this.origin.targetNode) {
-        const addModel:EdgeConfig = {
+        const addModel: EdgeConfig = {
           clazz: 'flow',
           source: this.origin.sourceNode.get('id'),
           target: this.origin.targetNode.get('id'),
@@ -195,12 +205,12 @@ export default function (G6) {
         if (this.graph.executeCommand) {
           this.graph.executeCommand('add', {
             type: 'edge',
-            addModel: addModel
+            addModel: addModel,
           });
         } else {
           this.graph.add('edge', addModel);
         }
       }
-    }
+    },
   });
 }

@@ -1,8 +1,8 @@
-import editorStyle from "../util/defaultStyle";
+import editorStyle from '../util/defaultStyle';
 import { shapeBase } from '@antv/g6/lib/shape/shapeBase';
 import Shape from '@antv/g6/lib/shape/shape';
 
-export default function(G6) {
+export default function (G6) {
   Shape.registerFactory('controlPoint', {
     defaultShapeType: 'marker',
     getShape: (type) => {
@@ -14,7 +14,7 @@ export default function(G6) {
           const shape = group.addShape('marker', {
             attrs: {
               ...style,
-              symbol: 'square'
+              symbol: 'square',
             },
             name: 'controlPoint-shape',
             draggable: true,
@@ -29,9 +29,9 @@ export default function(G6) {
               this.update({ style: { ...editorStyle.pointPointStyle } }, item);
             }
           }
-        }
+        },
       });
       return shapeObj;
-    }
+    },
   });
 }

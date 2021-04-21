@@ -36,45 +36,45 @@ class Toolbar {
   }
 
   getEvents() {
-    return { afteritemselected: 'updateToolbar',aftercommandexecute: 'updateToolbar' };
+    return { afteritemselected: 'updateToolbar', aftercommandexecute: 'updateToolbar' };
   }
 
   initEvents() {
     const graph = this.get('graph');
     const parentNode = this.get('container');
     const children = parentNode.querySelectorAll('div > span[data-command]');
-    each(children,(child,i)=>{
+    each(children, (child, i) => {
       const cmdName = child.getAttribute('data-command');
-      child.addEventListener('click', e => {
+      child.addEventListener('click', (e) => {
         graph.commandEnable(cmdName) && graph.executeCommand(cmdName);
       });
-    })
+    });
   }
 
-  updateToolbar(){
+  updateToolbar() {
     const graph = this.get('graph');
     const parentNode = this.get('container');
     const children = parentNode.querySelectorAll('div > span[data-command]');
-    each(children,(child,i)=>{
+    each(children, (child, i) => {
       const cmdName = child.getAttribute('data-command');
-      if(graph.commandEnable(cmdName)){
-        modifyCSS(child,{
-          cursor:'pointer',
+      if (graph.commandEnable(cmdName)) {
+        modifyCSS(child, {
+          cursor: 'pointer',
         });
-        modifyCSS(child.children[0],{
-          color:'#666',
+        modifyCSS(child.children[0], {
+          color: '#666',
         });
-        child.children[0].setAttribute('color','#666');
-      }else{
-        modifyCSS(child,{
-          cursor:'default',
+        child.children[0].setAttribute('color', '#666');
+      } else {
+        modifyCSS(child, {
+          cursor: 'default',
         });
-        modifyCSS(child.children[0],{
-          color:'#bfbfbf',
+        modifyCSS(child.children[0], {
+          color: '#bfbfbf',
         });
-        child.children[0].setAttribute('color','#bfbfbf');
+        child.children[0].setAttribute('color', '#bfbfbf');
       }
-    })
+    });
   }
 
   destroyPlugin() {

@@ -1,12 +1,12 @@
-import editorStyle from "../util/defaultStyle";
+import editorStyle from '../util/defaultStyle';
 import { shapeBase } from '@antv/g6/lib/shape/shapeBase';
 import Shape from '@antv/g6/lib/shape/shape';
 
-export default function(G6){
+export default function (G6) {
   Shape.registerFactory('anchor', {
     defaultShapeType: 'marker',
-    getShape:(type)=> {
-      const shapeObj = Object.assign({}, shapeBase,{
+    getShape: (type) => {
+      const shapeObj = Object.assign({}, shapeBase, {
         type: 'marker',
         itemType: type,
         drawShape(cfg, group) {
@@ -19,14 +19,14 @@ export default function(G6){
           return shape;
         },
         setState(name, value, item) {
-          if(name === 'active-anchor') {
-            if(value) {
-              this.update({style: {...editorStyle.anchorPointHoverStyle}}, item);
-            }else{
-              this.update({style: {...editorStyle.anchorPointStyle}}, item);
+          if (name === 'active-anchor') {
+            if (value) {
+              this.update({ style: { ...editorStyle.anchorPointHoverStyle } }, item);
+            } else {
+              this.update({ style: { ...editorStyle.anchorPointStyle } }, item);
             }
           }
-        }
+        },
       });
       return shapeObj;
     },
